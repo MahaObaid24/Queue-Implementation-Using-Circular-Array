@@ -1,0 +1,115 @@
+#include <iostream>
+#include <cassert>
+using namespace std;
+
+class arrayQueueType {
+    int front;
+    int rear;
+    int length;
+    int* arr;
+    int maxSize;
+
+public:
+    arrayQueueType(int size) {
+        front = 0;
+
+        if (size <= 0)
+            maxSize = 100;
+        else
+            maxSize = size;
+
+        arr = new int[maxSize];
+        rear = maxSize - 1;
+        length = 0;
+    }
+
+    bool isEmpty() {
+        return length == 0;
+    }
+
+    bool isFull() {
+        return length == maxSize;
+    }
+
+    void addQueue(int Element) {
+        if (isFull()) {
+            cout << "Full Queue\n";
+        } else {
+            rear = (rear + 1) % maxSize;
+            arr[rear] = Element;
+            length++;
+        }
+    }
+
+    void deQueue() {
+        if (isEmpty()) {
+            cout << "Empty Queue\n";
+        } else {
+            front = (front + 1) % maxSize;
+            length--;
+        }
+    }
+
+    int frontQueue() {
+        assert(!isEmpty());
+        return arr[front];
+    }
+
+    int rearQueue() {
+        assert(!isEmpty());
+        return arr[rear];
+    }
+
+    int searchQueue(int Element) {
+        int pos = -1;
+
+        if (!isEmpty()) {
+            int count = length;
+            int i = front;
+
+            while (count--) {
+                if (arr[i] == Element) {
+                    pos = i;
+                    break;
+                }
+                i = (i + 1) % maxSize;
+            }
+        } else {
+            cout << "Queue is Empty!";
+        }
+
+        return pos;
+    }
+
+    void printQueue() {
+        if (!isEmpty()) {
+            int count = length;
+            int i = front;
+
+            while (count--) {
+                cout << arr[i] << " ";
+                i = (i + 1) % maxSize;
+            }
+            cout << endl;
+        } else {
+            cout << "Empty Queue\n";
+        }
+    }
+};
+
+int main() {
+    arrayQueueType q(5);
+    q.addQueue(10);
+    q.addQueue(20);
+    q.addQueue(30);
+    q.addQueue(40);
+    q.addQueue(50);
+    q.deQueue();         // removes 10
+    q.addQueue(34);      // adds 34 in the circular spot
+
+    q.printQueue();      // Optional: to see the whole queue
+
+    cout << "Position of 34: " << q.searchQueue(34) << endl;
+
+    return 0;
+}
