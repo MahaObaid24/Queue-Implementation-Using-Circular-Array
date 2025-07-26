@@ -1,0 +1,104 @@
+
+#include <iostream>
+#include <cassert>
+using namespace std;
+//const int MAX_LENGTH = 100;
+
+class arrayQueueType {
+    int front ;
+    int rear ;
+    int length;
+    int *arr;
+    int maxSize;
+ public:
+    arrayQueueType(int size){
+        
+        front = 0;
+        
+        if(size<=0)
+        maxSize = 100;
+        else
+        maxSize = size;
+        
+        arr = new int[maxSize];
+        rear = maxSize - 1;
+        length = 0;
+        
+    }
+    
+    bool isEmpty(){
+        return length == 0;
+    }
+     bool isFull(){
+        return length == maxSize;
+    }
+    
+    void addQueue(int Element){
+        if(isFull()){
+            cout<<"Full Queue";
+        }
+        
+        else{
+            rear = (rear + 1)%maxSize;
+            arr[rear] = Element;
+            length++;
+            
+        }
+    }
+    
+    void deQueue(){
+        
+        if(isEmpty()){
+            cout<<"Empty Queue";
+        }
+        else{
+            front = (front + 1) % maxSize;
+            length--;
+        }
+    }
+    
+    int frontQueue(){
+        assert(!isEmpty());
+        return arr[front];
+    }
+    
+    int rearQueue(){
+        
+        assert(!isEmpty());
+        return arr[rear];
+    }
+    
+    void printQueue(){
+        
+       if(!isEmpty()){
+           
+        int count = length;
+        int i = front;
+        
+        while(count--) {
+            cout << arr[i] << " ";
+            i = (i + 1) % maxSize;
+        }
+        cout << endl;
+    }
+    
+        else{
+            cout<<" Empty Queue " ;
+        }
+        
+    }
+};
+
+int main()
+{
+    arrayQueueType q(5);
+    q.addQueue(10);
+    q.addQueue(20);
+    q.addQueue(30);
+    q.addQueue(40);
+    q.addQueue(50);
+    q.addQueue(50);
+    q.printQueue();
+  
+    return 0;
+}
